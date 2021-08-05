@@ -27,5 +27,4 @@ public class Servidor {
 		System.out.println("Iniciando o servidor... ");
 		return server;
 	}
-
 }

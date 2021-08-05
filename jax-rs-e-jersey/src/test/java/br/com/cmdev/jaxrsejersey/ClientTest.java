@@ -45,7 +45,7 @@ public class ClientTest {
 		
 		Client client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:8086");
-		String response = target.path("/carrinhos").request().get(String.class);
+		String response = target.path("/carrinhos/1").request().get(String.class);
 		
 		Carrinho carrinho = (Carrinho) new XStream().fromXML(response);
 		assertEquals("Rua Vergueiro 3185, 8 andar", carrinho.getRua());
