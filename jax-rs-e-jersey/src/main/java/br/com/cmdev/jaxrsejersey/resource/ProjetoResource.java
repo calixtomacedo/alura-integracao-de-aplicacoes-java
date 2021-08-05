@@ -1,17 +1,19 @@
 package br.com.cmdev.jaxrsejersey.resource;
 
-import org.glassfish.grizzly.http.util.HttpStatus;
+import java.net.URI;
 
 import com.thoughtworks.xstream.XStream;
 
 import br.com.cmdev.jaxrsejersey.dao.ProjetoDAO;
 import br.com.cmdev.jaxrsejersey.model.Projeto;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 @Path("/projetos")
 public class ProjetoResource {
@@ -25,11 +27,12 @@ public class ProjetoResource {
 	}
 
 	@POST
-	@Produces(MediaType.APPLICATION_XML)
-	public String adiciona(String request) {
+	@Consumes(MediaType.APPLICATION_XML)
+	public Response adiciona(String request) {
 		Projeto projeto = (Projeto) new XStream().fromXML(request);
 		new ProjetoDAO().adiciona(projeto);
-		return HttpStatus.CREATED_201.getReasonPhrase();
+		URI uri = URI.create("/projetos/" + projeto.getId());
+		return Response.created(uri).build();
 	}
 	
 }

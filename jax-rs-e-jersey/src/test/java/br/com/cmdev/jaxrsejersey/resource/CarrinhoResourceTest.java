@@ -22,6 +22,7 @@ import jakarta.ws.rs.core.Response;
 class CarrinhoResourceTest {
 	
 	private HttpServer server;
+	private Client client;
 
 	@BeforeEach
 	public void startServer() {
@@ -45,7 +46,7 @@ class CarrinhoResourceTest {
 
 	@Test
 	public void testaAdiocionarNovoProjeto() {
-		Client client = ClientBuilder.newClient();
+		this.client = ClientBuilder.newClient();
         WebTarget target = client.target("http://localhost:8086");
         
         Carrinho carrinho = new Carrinho();
@@ -57,8 +58,12 @@ class CarrinhoResourceTest {
         Entity<String> entity = Entity.entity(xml, MediaType.APPLICATION_XML);
 
         Response response = target.path("/carrinhos").request().post(entity);
+        assertEquals(201, response.getStatus());
         
-        assertEquals("Created", response.readEntity(String.class));
+        String location = response.getHeaderString("Location");
+        String resposta = client.target(location).request().get(String.class);
+        System.out.println(resposta);
+        assertTrue(resposta.contains("Tablet"));
 	}
 
 }

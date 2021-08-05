@@ -1,17 +1,19 @@
 package br.com.cmdev.jaxrsejersey.resource;
 
-import org.glassfish.grizzly.http.util.HttpStatus;
+import java.net.URI;
 
 import com.thoughtworks.xstream.XStream;
 
 import br.com.cmdev.jaxrsejersey.dao.CarrinhoDAO;
 import br.com.cmdev.jaxrsejersey.model.Carrinho;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 @Path("carrinhos")
 public class CarrinhoResource {
@@ -25,10 +27,11 @@ public class CarrinhoResource {
 	}
 	
 	@POST
-	@Produces(MediaType.APPLICATION_XML)
-	public String adiciona(String request) {
+	@Consumes(MediaType.APPLICATION_XML)
+	public Response adiciona(String request) {
 		Carrinho carrinho = (Carrinho) new XStream().fromXML(request);
 		new CarrinhoDAO().adiciona(carrinho);
-		return HttpStatus.CREATED_201.getReasonPhrase();
+		URI uri = URI.create("/carrinhos/" + carrinho.getId());
+		return Response.created(uri).build();
 	}
 }
