@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import br.com.cmdev.jaxrsejersey.model.Projeto;
 
 public class ProjetoDAO {
-
+	
     private static Map<Long, Projeto> banco = new HashMap<Long, Projeto>();
     private static AtomicLong contador = new AtomicLong(1);
 
@@ -29,5 +29,4 @@ public class ProjetoDAO {
     public Projeto remove(long id) {
         return banco.remove(id);
     }
-
 }

@@ -11,7 +11,6 @@ public class CarrinhoDAO {
 	
 	private static Map<Long, Carrinho> banco = new HashMap<Long, Carrinho>();
 	private static AtomicLong contador = new AtomicLong(1);
-	
 	static {
 		Produto videogame = new Produto(6237, "Videogame 4", 4000, 1);
 		Produto esporte = new Produto(3467, "Jogo de esporte", 60, 2);
@@ -36,5 +35,4 @@ public class CarrinhoDAO {
 	public Carrinho remove(long id) {
 		return banco.remove(id);
 	}
-
 }

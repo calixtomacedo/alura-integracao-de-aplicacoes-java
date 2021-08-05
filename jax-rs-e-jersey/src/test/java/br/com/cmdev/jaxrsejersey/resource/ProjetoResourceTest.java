@@ -36,4 +36,5 @@ public class ProjetoResourceTest {
 		Projeto response = (Projeto) new XStream().fromXML(webTarget.path("/projetos").request().get(String.class));
 		assertEquals(response.getNome(), "Minha loja");
 	}
+	
 }
