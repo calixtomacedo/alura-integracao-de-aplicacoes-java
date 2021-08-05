@@ -7,6 +7,7 @@ import com.thoughtworks.xstream.XStream;
 import br.com.cmdev.jaxrsejersey.dao.ProjetoDAO;
 import br.com.cmdev.jaxrsejersey.model.Projeto;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -33,6 +34,13 @@ public class ProjetoResource {
 		new ProjetoDAO().adiciona(projeto);
 		URI uri = URI.create("/projetos/" + projeto.getId());
 		return Response.created(uri).build();
+	}
+	
+	@Path("{id}")
+	@DELETE
+	public Response remove(@PathParam("id") Long id) {
+		new ProjetoDAO().remove(id);
+		return Response.ok().build();
 	}
 	
 }
