@@ -2,7 +2,12 @@ package br.com.cmdev.jaxrsejersey.resource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.logging.LoggingFeature;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,10 +23,21 @@ import jakarta.ws.rs.client.WebTarget;
 public class ProjetoResourceTest {
 
 	private HttpServer server;
+	private Client client;
+	private WebTarget target;
+
 	
 	@BeforeEach
 	public void startServer() {
 		server = Servidor.start();
+		this.client = ClientBuilder.newClient(createClientConfig());
+		this.target = client.target("http://localhost:8086");
+	}
+	
+	protected static ClientConfig createClientConfig() {
+		ClientConfig config = new ClientConfig();
+		config.register(new LoggingFeature(Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME), Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY, 10000));
+		return config;
 	}
 	
 	@AfterEach
@@ -31,9 +47,7 @@ public class ProjetoResourceTest {
 	
 	@Test
 	public void testaBuscaProjetoPassandoUmId() {
-		Client client = ClientBuilder.newClient();
-		WebTarget webTarget = client.target("http://localhost:8086");
-		Projeto response = (Projeto) new XStream().fromXML(webTarget.path("/projetos").request().get(String.class));
+		Projeto response = (Projeto) new XStream().fromXML(target.path("/projetos/1").request().get(String.class));
 		assertEquals(response.getNome(), "Minha loja");
 	}
 	

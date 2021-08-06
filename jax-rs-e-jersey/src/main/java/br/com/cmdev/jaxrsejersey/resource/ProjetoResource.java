@@ -24,7 +24,7 @@ public class ProjetoResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String listar(@PathParam("id") Long id) {
 		Projeto projeto = new ProjetoDAO().busca(id);
-		return projeto.toJson();
+		return projeto.toXML();
 	}
 
 	@POST
