@@ -9,7 +9,7 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
 
 
-public class ClientTest {
+class ClientTest {
 	
 	@Test
 	public void testaQueAConexaoComOServidorFunciona() {

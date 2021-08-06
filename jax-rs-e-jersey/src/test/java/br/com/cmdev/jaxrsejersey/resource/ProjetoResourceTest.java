@@ -28,9 +28,9 @@ public class ProjetoResourceTest {
 
 	@BeforeEach
 	public void startServer() {
-		this.server = Servidor.start();
-		this.client = ClientBuilder.newClient(createClientConfig());
-		this.target = client.target("http://localhost:8086");
+		server = Servidor.start();
+		client = ClientBuilder.newClient(createClientConfig());
+		target = client.target("http://localhost:8086");
 	}
 	
 	
@@ -47,8 +47,10 @@ public class ProjetoResourceTest {
 
 	@Test
 	public void testaBuscaProjetoPassandoUmId() {
-		String response = this.target.path("/projetos/1").request().get(String.class);
+		String response = target.path("/projetos/1").request().get(String.class);
 		Projeto projeto = (Projeto) new XStream().fromXML(response);
 		assertEquals(projeto.getNome(), "Minha loja");
 	}
+
 }
+

@@ -21,14 +21,16 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
 
-@Path("/carrinhos")
+@Path("carrinhos")
 public class CarrinhoResource {
 
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_XML)
+	//public Carrinho busca(@PathParam("id") Long id) {
 	public String busca(@PathParam("id") Long id) {
 		Carrinho carrinho = new CarrinhoDAO().busca(id);
+		//return carrinho;
 		return carrinho.toXML();
 	}
 	

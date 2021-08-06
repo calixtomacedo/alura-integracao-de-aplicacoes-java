@@ -25,7 +25,7 @@ import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-class CarrinhoResourceTest {
+public class CarrinhoResourceTest {
 	
 	private HttpServer server;
 	private Client client;
@@ -75,3 +75,4 @@ class CarrinhoResourceTest {
 	}
 
 }
+
