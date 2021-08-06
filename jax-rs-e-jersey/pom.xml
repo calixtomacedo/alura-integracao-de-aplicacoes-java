@@ -57,6 +57,26 @@
 			<version>3.0.2</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet</artifactId>
+			<version>3.0.2</version>
+		</dependency>
+
 	</dependencies>
+
+	<build>
+		<finalName>cmdev-rest</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.3.1</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

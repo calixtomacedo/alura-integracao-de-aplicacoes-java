@@ -15,10 +15,13 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriBuilder;
+import jakarta.ws.rs.core.UriInfo;
 
-@Path("carrinhos")
+@Path("/carrinhos")
 public class CarrinhoResource {
 
 	@GET
@@ -31,10 +34,11 @@ public class CarrinhoResource {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_XML)
-	public Response adiciona(String request) {
+	public Response adiciona(String request, @Context UriInfo uriInfo) {
 		Carrinho carrinho = (Carrinho) new XStream().fromXML(request);
 		new CarrinhoDAO().adiciona(carrinho);
-		URI uri = URI.create("/carrinhos/" + carrinho.getId());
+		UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+		URI uri = uriBuilder.path(Long.toString(carrinho.getId())).build();
 		return Response.created(uri).build();
 	}
 	

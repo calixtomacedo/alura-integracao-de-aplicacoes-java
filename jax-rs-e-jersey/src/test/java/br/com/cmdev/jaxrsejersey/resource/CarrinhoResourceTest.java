@@ -37,13 +37,13 @@ class CarrinhoResourceTest {
 		this.client = ClientBuilder.newClient(createClientConfig());
 		this.target = client.target("http://localhost:8086");
 	}
-	
+
 	protected static ClientConfig createClientConfig() {
 		ClientConfig config = new ClientConfig();
 		config.register(new LoggingFeature(Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME), Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY, 10000));
 		return config;
 	}
-	
+
 	@AfterEach
 	public void endServer() {
 		Servidor.stop(server);
@@ -58,9 +58,8 @@ class CarrinhoResourceTest {
 
 	@Test
 	public void testaAdiocionarNovoProjeto() {
-		this.target = client.target("http://localhost:8086");
         Carrinho carrinho = new Carrinho();
-        carrinho.adiciona(new Produto(314L, "Tablet", 999, 1));
+        carrinho.adiciona(new Produto(314L, "Tablet 2", 999, 2));
         carrinho.setRua("Rua Paulo Cesar Ribeiro 1065");
         carrinho.setCidade("Osasco");
         String xml = carrinho.toXML();

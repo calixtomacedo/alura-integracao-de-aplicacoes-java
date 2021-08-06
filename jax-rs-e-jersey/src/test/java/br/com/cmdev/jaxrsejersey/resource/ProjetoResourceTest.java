@@ -26,13 +26,13 @@ public class ProjetoResourceTest {
 	private Client client;
 	private WebTarget target;
 
-	
 	@BeforeEach
 	public void startServer() {
-		server = Servidor.start();
+		this.server = Servidor.start();
 		this.client = ClientBuilder.newClient(createClientConfig());
 		this.target = client.target("http://localhost:8086");
 	}
+	
 	
 	protected static ClientConfig createClientConfig() {
 		ClientConfig config = new ClientConfig();
@@ -44,11 +44,11 @@ public class ProjetoResourceTest {
 	public void endServer() {
 		Servidor.stop(server);
 	}
-	
+
 	@Test
 	public void testaBuscaProjetoPassandoUmId() {
-		Projeto response = (Projeto) new XStream().fromXML(target.path("/projetos/1").request().get(String.class));
-		assertEquals(response.getNome(), "Minha loja");
+		String response = this.target.path("/projetos/1").request().get(String.class);
+		Projeto projeto = (Projeto) new XStream().fromXML(response);
+		assertEquals(projeto.getNome(), "Minha loja");
 	}
-	
 }

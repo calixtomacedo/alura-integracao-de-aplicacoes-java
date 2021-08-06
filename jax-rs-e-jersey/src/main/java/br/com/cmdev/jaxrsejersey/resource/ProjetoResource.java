@@ -13,8 +13,11 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriBuilder;
+import jakarta.ws.rs.core.UriInfo;
 
 @Path("/projetos")
 public class ProjetoResource {
@@ -29,10 +32,11 @@ public class ProjetoResource {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_XML)
-	public Response adiciona(String request) {
+	public Response adiciona(String request, @Context UriInfo uriInfo) {
 		Projeto projeto = (Projeto) new XStream().fromXML(request);
 		new ProjetoDAO().adiciona(projeto);
-		URI uri = URI.create("/projetos/" + projeto.getId());
+		UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+		URI uri = uriBuilder.path(Long.toString(projeto.getId())).build();
 		return Response.created(uri).build();
 	}
 	
