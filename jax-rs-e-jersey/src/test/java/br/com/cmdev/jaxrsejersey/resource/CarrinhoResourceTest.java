@@ -1,8 +1,14 @@
 package br.com.cmdev.jaxrsejersey.resource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.logging.LoggingFeature;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,10 +29,19 @@ class CarrinhoResourceTest {
 	
 	private HttpServer server;
 	private Client client;
+	private WebTarget target;
 
 	@BeforeEach
 	public void startServer() {
-		server = Servidor.start();
+		this.server = Servidor.start();
+		this.client = ClientBuilder.newClient(createClientConfig());
+		this.target = client.target("http://localhost:8086");
+	}
+	
+	protected static ClientConfig createClientConfig() {
+		ClientConfig config = new ClientConfig();
+		config.register(new LoggingFeature(Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME), Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY, 10000));
+		return config;
 	}
 	
 	@AfterEach
@@ -36,19 +51,14 @@ class CarrinhoResourceTest {
 	
 	@Test
 	public void testaQueBuscarUmCarrinhoTrazOCarrinhoEsperado() {
-		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target("http://localhost:8086");
 		String response = target.path("/carrinhos/1").request().get(String.class);
-		
 		Carrinho carrinho = (Carrinho) new XStream().fromXML(response);
 		assertEquals("Rua Vergueiro 3185, 8 andar", carrinho.getRua());
 	}
 
 	@Test
 	public void testaAdiocionarNovoProjeto() {
-		this.client = ClientBuilder.newClient();
-        WebTarget target = client.target("http://localhost:8086");
-        
+		this.target = client.target("http://localhost:8086");
         Carrinho carrinho = new Carrinho();
         carrinho.adiciona(new Produto(314L, "Tablet", 999, 1));
         carrinho.setRua("Rua Paulo Cesar Ribeiro 1065");
@@ -62,7 +72,6 @@ class CarrinhoResourceTest {
         
         String location = response.getHeaderString("Location");
         String resposta = client.target(location).request().get(String.class);
-        System.out.println(resposta);
         assertTrue(resposta.contains("Tablet"));
 	}
 
