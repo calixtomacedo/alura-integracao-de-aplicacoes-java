@@ -22,8 +22,11 @@ public class Servidor {
 
 	public static HttpServer start() {
 		URI uri = URI.create("http://localhost:8086");
-		ResourceConfig config = new ResourceConfig().packages("br.com.cmdev.jaxrsejersey");
-		HttpServer server = GrizzlyHttpServerFactory.createHttpServer(uri, config);
+        final ResourceConfig config = new ResourceConfig();
+        
+        config.packages("br.com.cmdev.jaxrsejersey.resource");
+
+        HttpServer server = GrizzlyHttpServerFactory.createHttpServer(uri, config);
 		System.out.println("Iniciando o servidor... ");
 		return server;
 	}

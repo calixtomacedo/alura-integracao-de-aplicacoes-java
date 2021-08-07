@@ -2,8 +2,6 @@ package br.com.cmdev.jaxrsejersey.resource;
 
 import java.net.URI;
 
-import com.thoughtworks.xstream.XStream;
-
 import br.com.cmdev.jaxrsejersey.dao.CarrinhoDAO;
 import br.com.cmdev.jaxrsejersey.model.Carrinho;
 import br.com.cmdev.jaxrsejersey.model.Produto;
@@ -14,7 +12,6 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -26,18 +23,14 @@ public class CarrinhoResource {
 
 	@GET
 	@Path("{id}")
-	@Produces(MediaType.APPLICATION_XML)
-	//public Carrinho busca(@PathParam("id") Long id) {
-	public String busca(@PathParam("id") Long id) {
+	public Carrinho busca(@PathParam("id") Long id) {
 		Carrinho carrinho = new CarrinhoDAO().busca(id);
-		//return carrinho;
-		return carrinho.toXML();
+		return carrinho;
 	}
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_XML)
-	public Response adiciona(String request, @Context UriInfo uriInfo) {
-		Carrinho carrinho = (Carrinho) new XStream().fromXML(request);
+	public Response adiciona(Carrinho carrinho, @Context UriInfo uriInfo) {
 		new CarrinhoDAO().adiciona(carrinho);
 		UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
 		URI uri = uriBuilder.path(Long.toString(carrinho.getId())).build();
@@ -54,21 +47,18 @@ public class CarrinhoResource {
 	
 	@Path("{id}/produtos/{produtoId}")
 	@PUT
-	public Response alteraProduto(String request, @PathParam("id") Long id, @PathParam("produtoId") Long produtoId) {
+	public Response alteraProduto(Produto produto, @PathParam("id") Long id, @PathParam("produtoId") Long produtoId) {
 		Carrinho carrinho = new CarrinhoDAO().busca(id);
-		Produto produto = (Produto) new XStream().fromXML(request);
 		carrinho.troca(produto);
 		return Response.ok().build();
 	}
 	
 	@Path("{id}/produtos/{produtoId}/quantidade")
 	@PUT
-	public Response alteraProdutoQuantidade(String request, @PathParam("id") Long id, @PathParam("produtoId") Long produtoId) {
+	public Response alteraProdutoQuantidade(Produto produto, @PathParam("id") Long id, @PathParam("produtoId") Long produtoId) {
 		Carrinho carrinho = new CarrinhoDAO().busca(id);
-		Produto produto = (Produto) new XStream().fromXML(request);
 		carrinho.trocaQuantidade(produto);
 		return Response.ok().build();
 	}
-	
 	
 }

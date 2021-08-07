@@ -1,7 +1,6 @@
 package br.com.cmdev.jaxrsejersey.resource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,8 +11,6 @@ import org.glassfish.jersey.logging.LoggingFeature;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import com.thoughtworks.xstream.XStream;
 
 import br.com.cmdev.jaxrsejersey.Servidor;
 import br.com.cmdev.jaxrsejersey.model.Carrinho;
@@ -51,8 +48,7 @@ public class CarrinhoResourceTest {
 	
 	@Test
 	public void testaQueBuscarUmCarrinhoTrazOCarrinhoEsperado() {
-		String response = target.path("/carrinhos/1").request().get(String.class);
-		Carrinho carrinho = (Carrinho) new XStream().fromXML(response);
+		Carrinho carrinho = target.path("/carrinhos/1").request().get(Carrinho.class);
 		assertEquals("Rua Vergueiro 3185, 8 andar", carrinho.getRua());
 	}
 
@@ -62,16 +58,15 @@ public class CarrinhoResourceTest {
         carrinho.adiciona(new Produto(314L, "Tablet 2", 999, 2));
         carrinho.setRua("Rua Paulo Cesar Ribeiro 1065");
         carrinho.setCidade("Osasco");
-        String xml = carrinho.toXML();
         
-        Entity<String> entity = Entity.entity(xml, MediaType.APPLICATION_XML);
-
-        Response response = target.path("/carrinhos").request().post(entity);
+        Entity<Carrinho> request = Entity.entity(carrinho, MediaType.APPLICATION_XML);
+        Response response = target.path("/carrinhos").request().post(request);
         assertEquals(201, response.getStatus());
         
         String location = response.getHeaderString("Location");
-        String resposta = client.target(location).request().get(String.class);
-        assertTrue(resposta.contains("Tablet"));
+        Carrinho carrinhoResponse = client.target(location).request().get(Carrinho.class);
+        String nome = carrinhoResponse.getProdutos().get(0).getNome();
+        assertEquals("Tablet 2", nome);
 	}
 
 }

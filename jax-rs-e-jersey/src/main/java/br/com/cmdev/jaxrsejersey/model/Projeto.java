@@ -1,11 +1,11 @@
 package br.com.cmdev.jaxrsejersey.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
+
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 
 @XmlRootElement

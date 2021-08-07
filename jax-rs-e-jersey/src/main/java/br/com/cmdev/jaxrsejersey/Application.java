@@ -9,5 +9,5 @@ public class Application extends ResourceConfig {
 
 	public Application() {
         packages("br.com.cmdev.jaxrsejersey.resource");
-    }
+	}
 }
