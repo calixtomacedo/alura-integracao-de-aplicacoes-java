@@ -1,22 +1,27 @@
 package br.com.cmdev.estoquews.ws;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import javax.jws.WebMethod;
+import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import br.com.cmdev.estoquews.dao.ItemDao;
 import br.com.cmdev.estoquews.model.Item;
+import br.com.cmdev.estoquews.model.ListaItens;
 
 @WebService
 public class EstoqueWS {
 
 	private ItemDao dao = new ItemDao();
 
-	public List<Item> getItens() {
-		System.out.println("Chamando getItens()");
+	@WebMethod(operationName = "listarTodosItens")
+	@WebResult(name = "itens")
+	public ListaItens getItens() {
+		
 		ArrayList<Item> items = dao.todosItens();
-		return items;
+
+		return new ListaItens(items);
 	}
 
 }
