@@ -22,14 +22,14 @@ public class EstoqueWS {
 
 	private ItemDao dao = new ItemDao();
 	
-	@WebMethod(operationName = "listarTodosItens")
+	@WebMethod(operationName = "ListarTodosItens")
 	@ResponseWrapper(localName = "todosItens")
 	@WebResult(name = "itens")
 	public List<Item> getItens() {
 		return dao.todosItens();
 	}
 		
-	@WebMethod(operationName = "listarItensPorFiltro")
+	@WebMethod(operationName = "ListarItensPorFiltro")
 	@ResponseWrapper(localName = "itens")
 	@WebResult(name = "itens")
 	public ListaItens getItensByFilter(@WebParam(name="filtros") Filtros filtros) {
@@ -39,7 +39,7 @@ public class EstoqueWS {
 		return new ListaItens(itensResultado);
 	}
 	
-	@WebMethod(operationName = "cadastrarItem")
+	@WebMethod(operationName = "CadastrarItem")
 	@WebResult(name = "item")
 	public Item cadastarItem(@WebParam(name = "item") Item item, @WebParam(name = "token", header = true) TokenUsuario token) throws AutenticacaoException {
 		System.out.println("Cadastrando um Item: " + item +" Token: " + token);
