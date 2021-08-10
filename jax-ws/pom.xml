@@ -8,7 +8,8 @@
   <description>Curso de JAX-WS : Domine a criação de webservices SOAP</description>
   
   <modules>
-  	<module>estoque-ws</module>
+  	<module>ws</module>
+  	<module>web</module>
   </modules>
   
 </project>
