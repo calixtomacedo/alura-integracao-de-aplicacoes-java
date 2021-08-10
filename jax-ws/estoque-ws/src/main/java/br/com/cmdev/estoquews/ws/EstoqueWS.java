@@ -9,10 +9,13 @@ import javax.jws.WebService;
 import javax.xml.ws.ResponseWrapper;
 
 import br.com.cmdev.estoquews.dao.ItemDao;
+import br.com.cmdev.estoquews.dao.TokenDao;
+import br.com.cmdev.estoquews.exceptions.AutenticacaoException;
 import br.com.cmdev.estoquews.model.Filtro;
 import br.com.cmdev.estoquews.model.Filtros;
 import br.com.cmdev.estoquews.model.Item;
 import br.com.cmdev.estoquews.model.ListaItens;
+import br.com.cmdev.estoquews.model.TokenUsuario;
 
 @WebService
 public class EstoqueWS {
@@ -34,6 +37,21 @@ public class EstoqueWS {
 		List<Filtro> lista = filtros.getLista();
 		List<Item> itensResultado = dao.todosItens(lista);
 		return new ListaItens(itensResultado);
+	}
+	
+	@WebMethod(operationName = "cadastrarItem")
+	@WebResult(name = "item")
+	public Item cadastarItem(@WebParam(name = "item") Item item, @WebParam(name = "token", header = true) TokenUsuario token) throws AutenticacaoException {
+		System.out.println("Cadastrando um Item: " + item +" Token: " + token);
+		
+		boolean ehValido = new TokenDao().ehValido(token);
+		if(!ehValido) {
+			throw new AutenticacaoException("Falha na autenticação");
+		}
+		
+		this.dao.cadastrar(item);
+		
+		return item;
 	}
 
 }
