@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<venda moeda = "R$">
+	
+	<formaDePagamennto>Débito</formaDePagamennto>
+
+	<produtos>
+		<produto>
+			<nome>Livro de XML</nome>
+			<preco>29.90</preco>
+		</produto>
+		<produto>
+			<nome>Livro de Orientação a Objetos com Java</nome>
+			<preco>59.90</preco>
+		</produto>
+	</produtos>
+</venda>
