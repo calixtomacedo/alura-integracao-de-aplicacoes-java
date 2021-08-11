@@ -4,7 +4,7 @@
 	<xsl:template match="venda">
 		<h2>Venda</h2>
 		
-		<p>Forma de pagamento: <xsl:value-of select="formaDePagamennto"></xsl:value-of></p>
+		<p>Forma de pagamento: <xsl:value-of select="formaDePagamento"></xsl:value-of></p>
 		
 		<xsl:apply-templates select="produtos" />
 		

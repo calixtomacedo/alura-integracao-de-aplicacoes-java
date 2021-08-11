@@ -3,7 +3,7 @@
 	<xsd:element name="venda">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element name="formaDePagamennto" type="xsd:string" />
+				<xsd:element name="formaDePagamento" type="xsd:string" />
 				<xsd:element name="produtos">
 					<xsd:complexType>
 						<xsd:sequence>
@@ -15,7 +15,7 @@
 			<xsd:attribute name="moeda" type="xsd:string" />
 		</xsd:complexType>
 	</xsd:element>
-	<xsd:element name="formaDePagamennto" type="xsd:string" />
+	<xsd:element name="formaDePagamento" type="xsd:string" />
 
 	<xsd:element name="produto">
 		<xsd:complexType>

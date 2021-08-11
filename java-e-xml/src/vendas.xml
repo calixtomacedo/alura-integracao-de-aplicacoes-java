@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <venda moeda="Real" xsi:noNamespaceSchemaLocation="formatoVendas.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<formaDePagamennto>Débito</formaDePagamennto>
+	<formaDePagamento>Débito</formaDePagamento>
 	<produtos>
 		<produto>
 			<nome>Livro de XML</nome>
