@@ -1,19 +1,16 @@
-package br.com.cmdev.test;
+package br.com.cmdev.queues;
 
 import java.util.Scanner;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
-import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
-import javax.jms.MessageListener;
 import javax.jms.Session;
-import javax.jms.TextMessage;
 import javax.naming.InitialContext;
 
-public class JMSConsumerMessageListener {
+public class QueueJMSConsumer {
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws Exception {
@@ -29,17 +26,9 @@ public class JMSConsumerMessageListener {
 		Destination queue = (Destination) context.lookup("financeiro");
 		MessageConsumer consumer = session.createConsumer(queue);
 
-		consumer.setMessageListener(new MessageListener() {
-			@Override
-			public void onMessage(Message message) {
-				TextMessage textMessage = (TextMessage) message;
-				try {
-					System.out.println("Recebendo nossa mensagem: " + textMessage.getText());
-				} catch (JMSException e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		Message message = consumer.receive();
+
+		System.out.println("Recebendo nossa mensagem: " + message);
 
 		new Scanner(System.in).nextLine();
 

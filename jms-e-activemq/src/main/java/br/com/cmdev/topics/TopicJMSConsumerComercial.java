@@ -1,16 +1,19 @@
-package br.com.cmdev.test;
+package br.com.cmdev.topics;
 
 import java.util.Scanner;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
+import javax.jms.MessageListener;
 import javax.jms.Session;
+import javax.jms.TextMessage;
+import javax.jms.Topic;
 import javax.naming.InitialContext;
 
-public class JMSConsumer {
+public class TopicJMSConsumerComercial {
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws Exception {
@@ -19,16 +22,25 @@ public class JMSConsumer {
 		ConnectionFactory factory = (ConnectionFactory) context.lookup("ConnectionFactory");
 
 		Connection connection = factory.createConnection();
+		connection.setClientID("comercial");
+		
 		connection.start();
-
 		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-		Destination queue = (Destination) context.lookup("financeiro");
-		MessageConsumer consumer = session.createConsumer(queue);
+		Topic topic = (Topic) context.lookup("loja");
+		MessageConsumer consumer = session.createDurableSubscriber(topic, "assinatura");
 
-		Message message = consumer.receive();
-
-		System.out.println("Recebendo nossa mensagem: " + message);
+		consumer.setMessageListener(new MessageListener() {
+			@Override
+			public void onMessage(Message message) {
+				TextMessage textMessage = (TextMessage) message;
+				try {
+					System.out.println("Recebendo nossa mensagem: " + textMessage.getText());
+				} catch (JMSException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 
 		new Scanner(System.in).nextLine();
 
