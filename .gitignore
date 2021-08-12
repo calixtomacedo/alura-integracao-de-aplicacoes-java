@@ -1,12 +1,14 @@
-/target/
-/bin/
-
 # Compiled class file
 *.class
-*.bin
+*.project
+*.tern-project
+*.classpath
+.settings
+.bin
 
 # Log file
 *.log
+*.lst
 
 # BlueJ files
 *.ctxt
@@ -22,10 +24,10 @@
 *.zip
 *.tar.gz
 *.rar
-*.classpath
-*.project
-*.settings/*
-*.tern-project
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/target/
+/bin/
+/.classpath
+/.settings
