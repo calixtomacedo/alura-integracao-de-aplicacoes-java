@@ -1,16 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>br.com.cmdev</groupId>
-	<artifactId>jms-e-activemq</artifactId>
-	<version>1.0.0</version>
-	<name>jms-e-activemq</name>
-	<description>Curso de JMS e ActiveMQ: Mensageria com Java</description>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-
-	<dependencies>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>br.com.cmdev</groupId>
+  <artifactId>jms-e-activemq</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+  <name>jms-e-activemq</name>
+  <description>Curso de JMS e ActiveMQ: Mensageria com Java</description>
+  
+  <modules>
+  	<module>jms</module>
+  	<module>log</module>
+  </modules>
+  
+  	<dependencies>
 
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
@@ -25,20 +27,5 @@
 		</dependency>
 
 	</dependencies>
-
-	<build>
-		<finalName>${project.artifactId}</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
-				<configuration>
-					<source>16</source>
-					<target>16</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
+  
 </project>
