@@ -24,7 +24,8 @@ public class TopicJMSProducer {
 
 		MessageProducer producer = session.createProducer(topic);
 
-		Message message = session.createTextMessage("<pedido><id>741</id></pedido>");
+		Message message = session.createTextMessage("<pedido><id>999</id></pedido>");
+		//message.setBooleanProperty("ebook", true);
 		producer.send(message);
 
 		session.close();

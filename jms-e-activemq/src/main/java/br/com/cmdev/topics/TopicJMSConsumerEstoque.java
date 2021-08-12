@@ -35,7 +35,7 @@ public class TopicJMSConsumerEstoque {
 			public void onMessage(Message message) {
 				TextMessage textMessage = (TextMessage) message;
 				try {
-					System.out.println("Recebendo nossa mensagem: " + textMessage.getText());
+					System.out.println(textMessage.getText());
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

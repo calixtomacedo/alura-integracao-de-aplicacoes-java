@@ -13,7 +13,7 @@ import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.naming.InitialContext;
 
-public class TopicJMSConsumerComercial {
+public class TopicJMSConsumerEstoqueSelector {
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws Exception {
@@ -22,13 +22,13 @@ public class TopicJMSConsumerComercial {
 		ConnectionFactory factory = (ConnectionFactory) context.lookup("ConnectionFactory");
 
 		Connection connection = factory.createConnection();
-		connection.setClientID("comercial");
+		connection.setClientID("estoque");
 		
 		connection.start();
 		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
 		Topic topic = (Topic) context.lookup("loja");
-		MessageConsumer consumer = session.createDurableSubscriber(topic, "assinatura");
+		MessageConsumer consumer = session.createDurableSubscriber(topic, "assinatura-selector", "ebook is null OR ebook=false", false);
 
 		consumer.setMessageListener(new MessageListener() {
 			@Override
