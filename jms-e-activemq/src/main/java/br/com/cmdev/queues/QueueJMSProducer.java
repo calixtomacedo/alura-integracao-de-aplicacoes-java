@@ -24,11 +24,15 @@ public class QueueJMSProducer {
 		
 		MessageProducer producer = session.createProducer(queue);
 		
+		Message message = session.createTextMessage("<pedido><id>13</id></pedido>");
+		producer.send(message);
+
+		/*
 		for (int i = 0; i <= 1000; i++) {
 			Message message = session.createTextMessage("<pedido><id>"+ i +"</id></pedido>");
 			producer.send(message);
 		}
-		
+		*/
 		session.close();
 		connection.close();
 		context.close();

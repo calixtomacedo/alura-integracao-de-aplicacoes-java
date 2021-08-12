@@ -8,6 +8,9 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.naming.InitialContext;
 
+import br.com.cmdev.model.Pedido;
+import br.com.cmdev.model.PedidoFactory;
+
 public class TopicJMSProducer {
 
 	public static void main(String[] args) throws Exception {
@@ -24,7 +27,15 @@ public class TopicJMSProducer {
 
 		MessageProducer producer = session.createProducer(topic);
 
-		Message message = session.createTextMessage("<pedido><id>999</id></pedido>");
+		Pedido pedido = new PedidoFactory().geraPedidoComValores();
+/*	
+		StringWriter writer = new StringWriter();
+		JAXB.marshal(pedido, writer);
+		String xml = writer.toString();
+		System.out.println(xml);
+*/	
+		//Message message = session.createTextMessage(xml);
+		Message message = session.createObjectMessage(pedido);
 		//message.setBooleanProperty("ebook", true);
 		producer.send(message);
 

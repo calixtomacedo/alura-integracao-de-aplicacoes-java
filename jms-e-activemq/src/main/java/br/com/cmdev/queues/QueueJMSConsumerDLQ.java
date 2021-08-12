@@ -5,15 +5,13 @@ import java.util.Scanner;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
-import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.Session;
-import javax.jms.TextMessage;
 import javax.naming.InitialContext;
 
-public class QueueJMSConsumerMessageListener {
+public class QueueJMSConsumerDLQ {
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws Exception {
@@ -24,24 +22,15 @@ public class QueueJMSConsumerMessageListener {
 		Connection connection = factory.createConnection();
 		connection.start();
 
-		//Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		Session session = connection.createSession(true, Session.SESSION_TRANSACTED);
+		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-		Destination queue = (Destination) context.lookup("financeiro");
+		Destination queue = (Destination) context.lookup("DLQ");
 		MessageConsumer consumer = session.createConsumer(queue);
 
 		consumer.setMessageListener(new MessageListener() {
 			@Override
 			public void onMessage(Message message) {
-				TextMessage textMessage = (TextMessage) message;
-				try {
-					//message.acknowledge();
-					System.out.println(textMessage.getText());
-					//session.commit();
-					session.rollback();
-				} catch (JMSException e) {
-					e.printStackTrace();
-				}
+				System.out.println(message);
 			}
 		});
 

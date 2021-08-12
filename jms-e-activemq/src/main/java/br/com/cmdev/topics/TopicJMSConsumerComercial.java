@@ -3,15 +3,18 @@ package br.com.cmdev.topics;
 import java.util.Scanner;
 
 import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
+import javax.jms.ObjectMessage;
 import javax.jms.Session;
-import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.naming.InitialContext;
+
+import org.apache.activemq.ActiveMQConnectionFactory;
+
+import br.com.cmdev.model.Pedido;
 
 public class TopicJMSConsumerComercial {
 
@@ -19,7 +22,11 @@ public class TopicJMSConsumerComercial {
 	public static void main(String[] args) throws Exception {
 
 		InitialContext context = new InitialContext();
-		ConnectionFactory factory = (ConnectionFactory) context.lookup("ConnectionFactory");
+		//ConnectionFactory factory = (ConnectionFactory) context.lookup("ConnectionFactory");
+		//System.setProperty("org.apache.activemq.SERIALIZABLE_PACKAGES","*");
+		
+		ActiveMQConnectionFactory factory = (ActiveMQConnectionFactory) context.lookup("ConnectionFactory");
+		factory.setTrustAllPackages(true);
 
 		Connection connection = factory.createConnection();
 		connection.setClientID("comercial");
@@ -33,9 +40,11 @@ public class TopicJMSConsumerComercial {
 		consumer.setMessageListener(new MessageListener() {
 			@Override
 			public void onMessage(Message message) {
-				TextMessage textMessage = (TextMessage) message;
+				//TextMessage textMessage = (TextMessage) message;
+				ObjectMessage objectMessage = (ObjectMessage) message;
 				try {
-					System.out.println(textMessage.getText());
+					Pedido pedido = (Pedido) objectMessage.getObject();
+					System.out.println(pedido.getCodigo());
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}
