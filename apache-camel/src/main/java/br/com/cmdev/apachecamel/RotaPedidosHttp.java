@@ -1,22 +1,25 @@
 package br.com.cmdev.apachecamel;
 
+import org.apache.activemq.camel.component.ActiveMQComponent;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.http4.HttpMethods;
 import org.apache.camel.impl.DefaultCamelContext;
-import org.apache.camel.processor.ErrorHandler;
 
 public class RotaPedidosHttp {
 	public static void main(String[] args) throws Exception {
 
 		CamelContext context = new DefaultCamelContext();
+		//context.addComponent("activemq", ActiveMQComponent.activeMQComponent("tcp://127.0.0.1:8161/"));
+		context.addComponent("activemq", ActiveMQComponent.activeMQComponent("tcp://localhost:61616"));
+		
 		context.addRoutes(new RouteBuilder() {
 			@Override
 			public void configure() throws Exception {
 				
-				errorHandler(deadLetterChannel("file:erro")
+				errorHandler(deadLetterChannel("activemq:queue:pedidos.DLQ")
 						.logExhaustedMessageHistory(true)
 						.maximumRedeliveries(3)
 						.redeliveryDelay(2000).onRedelivery(new Processor() {
@@ -28,14 +31,12 @@ public class RotaPedidosHttp {
 							}
 						}));
 				
-				from("file:pedidos?delay=5s&noop=true")
-				.routeId("rota-pedidos")
-				.to("validator:pedido.xsd");
-				/*
-				.multicast()
-				.to("direct:soap")
-				.to("direct:http");
-				*/
+				from("activemq:queue:pedidos")
+					.routeId("rota-pedidos")
+					.to("validator:pedido.xsd")
+					.multicast()
+					.to("direct:soap")
+					.to("direct:http");
 				from("direct:http")
 					.routeId("rota-http")
 					.setProperty("pedidoId", xpath("/pedido/id/text()"))
@@ -46,7 +47,6 @@ public class RotaPedidosHttp {
 						.xpath("/item/formato[text()='EBOOK']")
 					.setProperty("ebookId", xpath("/item/livro/codigo/text()"))
 					.marshal().xmljson()
-					//.log("${body}")
 					.setHeader(Exchange.HTTP_METHOD, HttpMethods.GET)
 				    .setHeader(Exchange.HTTP_QUERY, simple("ebookId=${property.ebookId}&pedidoId=${property.pedidoId}&clienteId=${property.clienteId}"))
 					.to("http4://localhost:8082/webservices/ebook/item");
