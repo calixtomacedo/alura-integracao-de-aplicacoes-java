@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 //http://localhost:8080/webservices/ebook/item
 @WebServlet(loadOnStartup = 1, urlPatterns = "/ebook/item")
 public class EbooItemServlet extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Override

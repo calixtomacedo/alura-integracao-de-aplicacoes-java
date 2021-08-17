@@ -14,15 +14,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Nota {
-	
-	@XmlElement(required=true)
+
+	@XmlElement(required = true)
 	private Calendar data;
 
-	@XmlElement(required=true)
+	@XmlElement(required = true)
 	private BigDecimal valor;
-	
-	@XmlElementWrapper(required=true,name="itens")
-	@XmlElement(required=true,name="item")
+
+	@XmlElementWrapper(required = true, name = "itens")
+	@XmlElement(required = true, name = "item")
 	private List<Item> itens;
 
 	public Calendar getData() {
@@ -55,7 +55,7 @@ public class Nota {
 	}
 
 	private String formatData() {
-		if(this.data == null) {
+		if (this.data == null) {
 			return "";
 		}
 		return new SimpleDateFormat("dd/MM/yyyy").format(this.data.getTime());

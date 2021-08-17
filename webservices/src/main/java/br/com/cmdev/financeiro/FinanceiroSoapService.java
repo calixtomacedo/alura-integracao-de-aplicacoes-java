@@ -9,19 +9,19 @@ import javax.jws.soap.SOAPBinding.ParameterStyle;
 import javax.jws.soap.SOAPBinding.Style;
 import javax.jws.soap.SOAPBinding.Use;
 
-@WebService(targetNamespace="http://financeiro.com.br/nota") 
-@SOAPBinding(use=Use.LITERAL,style=Style.DOCUMENT,parameterStyle=ParameterStyle.BARE)
+@WebService(targetNamespace = "http://financeiro.com.br/nota")
+@SOAPBinding(use = Use.LITERAL, style = Style.DOCUMENT, parameterStyle = ParameterStyle.BARE)
 public class FinanceiroSoapService {
-	
-	
+
 	public FinanceiroSoapService() {
 		System.out.println("Subindo serviço SOAP: http://localhost:8082/webservices/financeiro");
 	}
-	
-	@WebMethod @Oneway
-	public void cadastraNota(@WebParam(name="nota") Nota nota) {
-		
-		System.out.println("Financeiro (SOAP) recebendo: "  + nota);
+
+	@WebMethod
+	@Oneway
+	public void cadastraNota(@WebParam(name = "nota") Nota nota) {
+
+		System.out.println("Financeiro (SOAP) recebendo: " + nota);
 
 	}
 }

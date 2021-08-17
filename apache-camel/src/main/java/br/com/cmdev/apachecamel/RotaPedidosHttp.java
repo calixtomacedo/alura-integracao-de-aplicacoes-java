@@ -2,9 +2,11 @@ package br.com.cmdev.apachecamel;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.http4.HttpMethods;
 import org.apache.camel.impl.DefaultCamelContext;
+import org.apache.camel.processor.ErrorHandler;
 
 public class RotaPedidosHttp {
 	public static void main(String[] args) throws Exception {
@@ -13,12 +15,27 @@ public class RotaPedidosHttp {
 		context.addRoutes(new RouteBuilder() {
 			@Override
 			public void configure() throws Exception {
+				
+				errorHandler(deadLetterChannel("file:erro")
+						.logExhaustedMessageHistory(true)
+						.maximumRedeliveries(3)
+						.redeliveryDelay(2000).onRedelivery(new Processor() {
+							@Override
+							public void process(Exchange exchange) throws Exception {
+								int counter = (int) exchange.getIn().getHeader(Exchange.REDELIVERY_COUNTER);
+								int max = (int) exchange.getIn().getHeader(Exchange.REDELIVERY_MAX_COUNTER);
+								System.out.println("Redelivery " + counter + " / " + max);
+							}
+						}));
+				
 				from("file:pedidos?delay=5s&noop=true")
 				.routeId("rota-pedidos")
+				.to("validator:pedido.xsd");
+				/*
 				.multicast()
 				.to("direct:soap")
 				.to("direct:http");
-				
+				*/
 				from("direct:http")
 					.routeId("rota-http")
 					.setProperty("pedidoId", xpath("/pedido/id/text()"))
@@ -40,6 +57,7 @@ public class RotaPedidosHttp {
 					.log("${body}")
 					.setHeader(Exchange.CONTENT_TYPE, constant("text/xml"))
 					.to("http4://localhost:8082/webservices/financeiro");
+				
 			}
 		});
 

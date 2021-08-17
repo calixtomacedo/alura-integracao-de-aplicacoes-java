@@ -7,11 +7,11 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Item {
 
-	@XmlElement(required=true)
+	@XmlElement(required = true)
 	private int quantidade;
-	@XmlElement(required=true)
+	@XmlElement(required = true)
 	private String formato;
-	@XmlElement(required=true)
+	@XmlElement(required = true)
 	private String codigo;
 
 	public int getQuantidade() {
