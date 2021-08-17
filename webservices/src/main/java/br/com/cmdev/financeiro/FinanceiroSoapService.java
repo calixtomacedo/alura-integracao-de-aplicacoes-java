@@ -15,7 +15,7 @@ public class FinanceiroSoapService {
 	
 	
 	public FinanceiroSoapService() {
-		System.out.println("Subindo serviço SOAP: http://localhost:8081/webservices/financeiro");
+		System.out.println("Subindo serviço SOAP: http://localhost:8082/webservices/financeiro");
 	}
 	
 	@WebMethod @Oneway

@@ -27,17 +27,19 @@ public class RotaPedidosHttp {
 						.xpath("/pedido/itens/item")
 					.filter()
 						.xpath("/item/formato[text()='EBOOK']")
-					.log("${id}")
+					.setProperty("ebookId", xpath("/item/livro/codigo/text()"))
 					.marshal().xmljson()
-					.log("${body}")
+					//.log("${body}")
 					.setHeader(Exchange.HTTP_METHOD, HttpMethods.GET)
-				    .setHeader(Exchange.HTTP_QUERY, simple("clienteId=${property.clienteId}&pedidoId=${property.pedidoId}&ebookId=${property.ebookId}"))
+				    .setHeader(Exchange.HTTP_QUERY, simple("ebookId=${property.ebookId}&pedidoId=${property.pedidoId}&clienteId=${property.clienteId}"))
 					.to("http4://localhost:8082/webservices/ebook/item");
 				
 				from("direct:soap")
 					.routeId("rota-soap")
-					.setBody(constant("<envelope>Teste</envelope>"))
-					.to("mock:soap");
+					.to("xslt:pedido-para-soap.xslt")
+					.log("${body}")
+					.setHeader(Exchange.CONTENT_TYPE, constant("text/xml"))
+					.to("http4://localhost:8082/webservices/financeiro");
 			}
 		});
 
