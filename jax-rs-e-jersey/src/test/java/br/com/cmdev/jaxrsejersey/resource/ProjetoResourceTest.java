@@ -1,5 +1,5 @@
 package br.com.cmdev.jaxrsejersey.resource;
-
+/*
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.logging.Level;
@@ -53,4 +53,4 @@ public class ProjetoResourceTest {
 	}
 
 }
-
+*/
